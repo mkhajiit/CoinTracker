@@ -57,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
   body{
     font-family: "Source Sans 3", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 300;
+    font-weight: 400;
     font-style: normal;
     font-size: 26px;
     background-color: ${(props) => props.theme.bgColor};

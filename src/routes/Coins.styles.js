@@ -13,10 +13,10 @@ const Header = styled.header`
 
 const CoinList = styled.ul``;
 
+// Link 는 a로 변환 되기 때문에 a의 스타일을 변경하면 Link가 바뀜
 const Coin = styled.h1`
   background-color: white;
   color: ${(props) => props.theme.bgColor};
-  padding: 20px;
   border-radius: 15px;
   margin-bottom: 10px;
   a {
