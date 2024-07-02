@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Title, Container, Header, CoinList, Coin } from './Coins.styles';
+import { Title, Container, Header, CoinList, Coin, Img } from './Coins.styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import defaultImage from './defaultImage.jpg';
 interface CoinInterface {
   id: string;
   name: string;
@@ -20,7 +20,6 @@ export default function Coins() {
   //axios 사용
   const getCoins = async () => {
     const res = await axios('https://api.coinpaprika.com/v1/coins');
-    console.log(res);
     setCoins(res.data.slice(0, 100));
     setLoading(false);
   };
@@ -50,6 +49,10 @@ export default function Coins() {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
+              <Img
+                src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
+                onError={(e) => (e.currentTarget.src = defaultImage)}
+              />
               <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
             </Coin>
           ))}

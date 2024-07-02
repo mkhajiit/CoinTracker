@@ -15,6 +15,11 @@ const Header = styled.header`
 
 const CoinList = styled.ul``;
 
+const Img = styled.img`
+  width: 40px;
+  height: 40px;
+`;
+
 // Link 는 a로 변환 되기 때문에 a의 스타일을 변경하면 Link가 바뀜
 const Coin = styled.h1`
   background-color: white;
@@ -37,4 +42,4 @@ const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
-export { Title, Container, Header, CoinList, Coin };
+export { Title, Container, Header, CoinList, Coin, Img };
