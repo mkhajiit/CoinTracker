@@ -49,7 +49,9 @@ export default function Coins() {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>
+              <Link to='new-path' state={{ some: 'value' }} />
+              {/* 6버전 이상의 react-router-dom 에서는 리터럴을 지원안해서 아래방법으로 처리함 */}
+              <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                 <Img
                   src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
                   onError={(e) => (e.currentTarget.src = defaultImage)}
