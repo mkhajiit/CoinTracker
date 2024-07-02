@@ -49,11 +49,13 @@ export default function Coins() {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Img
-                src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
-                onError={(e) => (e.currentTarget.src = defaultImage)}
-              />
-              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+              <Link to={`/${coin.id}`}>
+                <Img
+                  src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
+                  onError={(e) => (e.currentTarget.src = defaultImage)}
+                />
+                {coin.name} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinList>

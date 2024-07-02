@@ -18,10 +18,11 @@ const CoinList = styled.ul``;
 const Img = styled.img`
   width: 40px;
   height: 40px;
+  margin-right: 10px;
 `;
 
 // Link 는 a로 변환 되기 때문에 a의 스타일을 변경하면 Link가 바뀜
-const Coin = styled.h1`
+const Coin = styled.li`
   background-color: white;
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
@@ -29,7 +30,8 @@ const Coin = styled.h1`
   a {
     padding: 20px;
     transition: color 0.2s ease-in;
-    display: block;
+    display: flex;
+    align-items: center;
   }
   &:hover {
     a {

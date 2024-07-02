@@ -59,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    font-size: 26px;
+    font-size: 22px;
     background-color: ${(props) => props.theme.bgColor};
     color:${(props) => props.theme.textColor}
   }
