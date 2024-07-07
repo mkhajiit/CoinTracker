@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Title, Container, Header } from './Coins.styles';
+import { Title, Container, Header, Overview, OverviewItem, Description } from './Coins.styles';
 import axios from 'axios';
 
 interface RouterState {
@@ -79,7 +79,6 @@ export default function Coin() {
     const coinData = res.data;
     console.log(coinData);
     setCoinInfo(coinData);
-    setLoading(false);
   }, [coinId]);
 
   //Coin의 가격정보를 받아오는 함수
@@ -96,14 +95,45 @@ export default function Coin() {
   useEffect(() => {
     getCoins();
     getPrice();
+    setLoading(false);
   }, [getCoins, getPrice]);
 
   return (
     <Container>
       <Header>
-        <Title>{name}</Title>
+        <Title>{name ? name : loading ? 'Loading...' : coinInfo?.name}</Title>
       </Header>
-      {loading ? 'Loading ...' : null}
+      {loading ? (
+        'Loading ...'
+      ) : (
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>Rank:</span>
+              <span>{coinInfo?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol:</span>
+              <span>${coinInfo?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Open Source:</span>
+              <span>{coinInfo?.open_source ? 'Yes' : 'No'}</span>
+            </OverviewItem>
+          </Overview>
+          <Description>{coinInfo?.description}</Description>
+          <Overview>
+            <OverviewItem>
+              <span>Total Supply:</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply:</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+        </>
+      )}
     </Container>
   );
 }
