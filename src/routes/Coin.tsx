@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { Title, Container, Header, Overview, OverviewItem, Description } from './Coins.styles';
 import axios from 'axios';
 
-interface RouterState {
-  name: string;
+interface RouteState {
+  state: {
+    name: string;
+  };
 }
+
 // alt+ shift + i 하면 선택된 모든줄 끝에 커서 생성
 interface IInfoData {
   id: string;
@@ -89,8 +92,9 @@ export default function Coin() {
     setPriceInfo(priceData);
   }, [coinId]);
 
-  const location = useLocation();
-  const { name } = location.state as RouterState; // state에서 받아온 name을 구조분해 할당
+  const { state } = useLocation() as RouteState;
+
+  // state에서 받아온 name을 구조분해 할당
 
   useEffect(() => {
     getCoins();
@@ -101,7 +105,7 @@ export default function Coin() {
   return (
     <Container>
       <Header>
-        <Title>{name ? name : loading ? 'Loading...' : coinInfo?.name}</Title>
+        <Title>{state?.name ? state.name : loading ? 'loading...' : coinInfo?.name}</Title>
       </Header>
       {loading ? (
         'Loading ...'
@@ -132,6 +136,7 @@ export default function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
+          <Outlet />
         </>
       )}
     </Container>
