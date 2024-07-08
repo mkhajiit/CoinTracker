@@ -1,7 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
-import { Title, Container, Header, Overview, OverviewItem, Description } from './Coins.styles';
+import { Outlet, useLocation, useMatch, useParams } from 'react-router-dom';
+import {
+  Title,
+  Container,
+  Header,
+  Overview,
+  OverviewItem,
+  Description,
+  Tabs,
+  Tab,
+} from './Coins.styles';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface RouteState {
   state: {
@@ -75,12 +85,12 @@ export default function Coin() {
   const [loading, setLoading] = useState(true);
   const [coinInfo, setCoinInfo] = useState<IInfoData>();
   const [priceInfo, setPriceInfo] = useState<IPriceData>();
-
+  const chartMatch = useMatch('/:coinId/chart'); // /:coinId 라는 패턴이 필요한거라 백틱안에 쓸필요없음 굳이 coinId가 아니어도 된다는 소리
+  const priceMatch = useMatch('/:coinId/price');
   //Coin의 상세정보를 받아오는 함수
   const getCoins = useCallback(async () => {
     const res = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
     const coinData = res.data;
-    console.log(coinData);
     setCoinInfo(coinData);
   }, [coinId]);
 
@@ -88,7 +98,6 @@ export default function Coin() {
   const getPrice = useCallback(async () => {
     const res = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
     const priceData = res.data;
-    console.log(priceData);
     setPriceInfo(priceData);
   }, [coinId]);
 
@@ -136,6 +145,22 @@ export default function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
+          <Tabs>
+            <Tab $isActive={chartMatch !== null}>
+              <Link to='chart'>Chart</Link>
+            </Tab>
+            <Tab $isActive={priceMatch !== null}>
+              <Link to='price'>Price</Link>
+            </Tab>
+          </Tabs>
+          {/* 둘다 /coinId/price처럼 이동 가능
+          <Link to='chart'>Chart</Link>
+          <Link to={`/${coinId}/price`}>Price</Link> */}
+
+          {/* Warning : React does not recognize the `isActive` prop on a DOM element. If you
+          intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase
+          `isactive` instead. If you accidentally passed it from a parent component, remove it from
+          the DOM element. 해결: isActive에 $붙여서 $isActive로 전부 변경해서 해결 */}
           <Outlet />
         </>
       )}
