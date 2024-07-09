@@ -10,8 +10,9 @@ import {
   Tabs,
   Tab,
 } from './Coins.styles';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { fetchCoinInfo, fetchCoinTickers } from '../api';
+import { useQuery } from 'react-query';
 
 interface RouteState {
   state: {
@@ -82,39 +83,52 @@ export default function Coin() {
   const { coinId } = useParams<{ coinId: string }>(); // 구조 분해 할당 coin의 coinId를 받아옴
   // const { coinId:coinName } = useParams(); 구조 분해 할당 후 변수 이름을 변경하는 방법
   // React Router v6에서는 useParams 훅을 사용할 때 타입스크립트와 함께 더 간단하게 사용할 수 있습니다. useParams 훅은 반환된 값이 기본적으로 Record<string, string | undefined> 형식
-  const [loading, setLoading] = useState(true);
-  const [coinInfo, setCoinInfo] = useState<IInfoData>();
-  const [priceInfo, setPriceInfo] = useState<IPriceData>();
+
+  //react query 사용 x
+
+  // const [loading, setLoading] = useState(true);
+  // const [infoData, setCoinInfo] = useState<IInfoData>();
+  // const [priceData, setPriceInfo] = useState<IPriceData>();
   const chartMatch = useMatch('/:coinId/chart'); // /:coinId 라는 패턴이 필요한거라 백틱안에 쓸필요없음 굳이 coinId가 아니어도 된다는 소리
   const priceMatch = useMatch('/:coinId/price');
-  //Coin의 상세정보를 받아오는 함수
-  const getCoins = useCallback(async () => {
-    const res = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
-    const coinData = res.data;
-    setCoinInfo(coinData);
-  }, [coinId]);
+  // //Coin의 상세정보를 받아오는 함수
+  // const getCoins = useCallback(async () => {
+  //   const res = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
+  //   const coinData = res.data;
+  //   setCoinInfo(coinData);
+  // }, [coinId]);
 
-  //Coin의 가격정보를 받아오는 함수
-  const getPrice = useCallback(async () => {
-    const res = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
-    const priceData = res.data;
-    setPriceInfo(priceData);
-  }, [coinId]);
+  // //Coin의 가격정보를 받아오는 함수
+  // const getPrice = useCallback(async () => {
+  //   const res = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
+  //   const priceData = res.data;
+  //   setPriceInfo(priceData);
+  // }, [coinId]);
 
   const { state } = useLocation() as RouteState;
 
-  // state에서 받아온 name을 구조분해 할당
+  // useEffect(() => {
+  //   getCoins();
+  //   getPrice();
+  //   setLoading(false);
+  // }, [getCoins, getPrice]);
 
-  useEffect(() => {
-    getCoins();
-    getPrice();
-    setLoading(false);
-  }, [getCoins, getPrice]);
+  //react query 사용
 
+  const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(['info', coinId], () =>
+    fetchCoinInfo(coinId)
+  );
+
+  const { isLoading: tickersLoading, data: priceData } = useQuery<IPriceData>(
+    ['price', coinId],
+    () => fetchCoinTickers(coinId)
+  );
+
+  const loading = infoLoading || tickersLoading;
   return (
     <Container>
       <Header>
-        <Title>{state?.name ? state.name : loading ? 'loading...' : coinInfo?.name}</Title>
+        <Title>{state?.name ? state.name : loading ? 'loading...' : infoData?.name}</Title>
       </Header>
       {loading ? (
         'Loading ...'
@@ -123,26 +137,26 @@ export default function Coin() {
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{coinInfo?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${coinInfo?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{coinInfo?.open_source ? 'Yes' : 'No'}</span>
+              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
             </OverviewItem>
           </Overview>
-          <Description>{coinInfo?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Supply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{priceData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{priceData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
