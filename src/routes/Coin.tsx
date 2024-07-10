@@ -175,7 +175,7 @@ export default function Coin() {
           intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase
           `isactive` instead. If you accidentally passed it from a parent component, remove it from
           the DOM element. 해결: isActive에 $붙여서 $isActive로 전부 변경해서 해결 */}
-          <Outlet />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>
