@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
 import { Title, Container, Header, CoinList, Coin, Img } from './Coins.styles';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import defaultImage from './defaultImage.jpg';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
+
 interface CoinInterface {
   id: string;
   name: string;
