@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import About from './components/About';
 import Coins from './routes/Coins';
 import Coin from './routes/Coin';
 import Price from './routes/Price';
@@ -16,7 +15,6 @@ export default function Router() {
           <Route path='chart' element={<Chart />} />
           {/* 주의!!! 경로앞에 / 달면 안됨 */}
         </Route>
-        <Route path='/about' element={<About />} />
       </Routes>
     </BrowserRouter>
   );
