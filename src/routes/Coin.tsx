@@ -122,6 +122,9 @@ export default function Coin() {
   const { isLoading: tickersLoading, data: priceData } = useQuery<IPriceData>(
     ['price', coinId],
     () => fetchCoinTickers(coinId)
+    // {
+    //   refetchInterval: 10000, //10000밀리초(10초)마다 fetch를 하도록 설정 coin파프리카의 무료 fetch 제한 때문에 주석처리함
+    // }
   );
 
   const loading = infoLoading || tickersLoading;
@@ -144,8 +147,8 @@ export default function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
+              <span>Price:</span>
+              <span>${priceData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
