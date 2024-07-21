@@ -13,10 +13,12 @@ import {
 import { Link } from 'react-router-dom';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import { useQuery } from 'react-query';
+import { Helmet } from 'react-helmet';
 
 interface RouteState {
   state: {
     name: string;
+    symbol: string;
   };
 }
 
@@ -130,6 +132,15 @@ export default function Coin() {
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? 'loading...' : infoData?.name}</title>
+        <link
+          rel='icon'
+          type='image/png'
+          href={`https://cryptoicon-api.pages.dev/api/icon/${state.symbol}`}
+          sizes='16x16'
+        ></link>
+      </Helmet>
       <Header>
         <Title>{state?.name ? state.name : loading ? 'loading...' : infoData?.name}</Title>
       </Header>

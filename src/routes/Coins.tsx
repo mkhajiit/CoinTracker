@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import defaultImage from './defaultImage.jpg';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
+import { Helmet } from 'react-helmet';
 
 interface CoinInterface {
   id: string;
@@ -47,6 +48,10 @@ export default function Coins() {
   const { isLoading, data } = useQuery<CoinInterface[]>(['allCoins'], fetchCoins);
   return (
     <Container>
+      <Helmet>
+        <title>코인</title>
+        <link rel='icon' href={defaultImage} sizes='16x16'></link>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
@@ -58,7 +63,10 @@ export default function Coins() {
             <Coin key={coin.id}>
               <Link to='new-path' state={{ some: 'value' }} />
               {/* 6버전 이상의 react-router-dom 에서는 리터럴을 지원안해서 아래방법으로 처리함 */}
-              <Link to={`/${coin.id}`} state={{ name: coin.name }}>
+              <Link
+                to={`/${coin.id}`}
+                state={{ name: coin.name, symbol: coin.symbol.toLowerCase() }}
+              >
                 <Img
                   src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
                   onError={(e) => (e.currentTarget.src = defaultImage)}
