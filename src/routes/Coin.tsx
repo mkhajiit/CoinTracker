@@ -137,7 +137,7 @@ export default function Coin() {
         <link
           rel='icon'
           type='image/png'
-          href={`https://cryptoicon-api.pages.dev/api/icon/${state.symbol}`}
+          href={`https://cryptoicon-api.pages.dev/api/icon/${state?.symbol ?? ''}`}
           sizes='16x16'
         ></link>
       </Helmet>
