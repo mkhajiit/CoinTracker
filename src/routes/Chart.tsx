@@ -2,6 +2,8 @@ import { useQuery } from 'react-query';
 import { useOutletContext } from 'react-router-dom';
 import { fetchCoinHistory } from '../api';
 import ApexCharts from 'react-apexcharts';
+import { useRecoilValue } from 'recoil';
+import { isDarkAtom } from './atom';
 
 interface ChartProps {
   coinId: string;
@@ -27,7 +29,7 @@ export default function Chart() {
     //   refetchInterval: 10000,
     // }
   );
-
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <div>
       {isLoading ? (
@@ -46,7 +48,7 @@ export default function Chart() {
             grid: {
               show: false,
             },
-            theme: { mode: 'dark' },
+            theme: { mode: isDark ? 'dark' : 'light' },
             stroke: { curve: 'smooth', width: 4 },
             xaxis: { axisTicks: { show: false }, labels: { show: false } },
             yaxis: { show: false },
