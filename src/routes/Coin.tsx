@@ -159,7 +159,7 @@ export default function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>${priceData?.quotes.USD.price.toFixed(3)}</span>
+              <span>${priceData?.quotes?.USD?.price?.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>

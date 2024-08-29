@@ -23,12 +23,13 @@ const Img = styled.img`
 
 // Link 는 a로 변환 되기 때문에 a의 스타일을 변경하면 Link가 바뀜
 const Coin = styled.li`
-  background-color: white;
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${(props) => props.theme.textColor};
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  border: 1px solid white;
   a {
     padding: 20px;
     transition: color 0.2s ease-in;
