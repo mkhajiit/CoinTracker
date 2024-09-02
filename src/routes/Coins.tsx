@@ -6,6 +6,8 @@ import defaultImage from './defaultImage.jpg';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
 import { Helmet } from 'react-helmet';
+import { useSetRecoilState } from 'recoil';
+import { isDarkAtom } from './atom';
 
 interface CoinInterface {
   id: string;
@@ -45,6 +47,8 @@ export default function Coins() {
   // }, []);
 
   //react-query 사용
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   const { isLoading, data } = useQuery<CoinInterface[]>(['allCoins'], fetchCoins);
   return (
     <Container>
@@ -54,6 +58,7 @@ export default function Coins() {
       </Helmet>
       <Header>
         <Title>코인</Title>
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
       {isLoading ? (
         'Loading ...'
